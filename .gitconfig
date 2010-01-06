@@ -1,0 +1,74 @@
+[user]
+	name = David O'Hara
+	email = david@davidohara.net
+[color]
+  branch = auto
+  diff = auto
+  status = auto
+
+[color "branch"]
+  current = yellow reverse
+  local = yellow
+  remote = green
+
+[color "diff"]
+  meta = yellow bold
+  frag = magenta bold
+  old = red bold
+  new = green bold
+
+[color "status"]
+  added = yellow
+  changed = green
+  untracked = cyan
+
+[alias]
+	# Snagged from Ryan Tomayko (http://github.com/rtomayko/dotfiles)
+	# commit
+	ci = commit --verbose
+	cn = commit --verbose --amend
+	ca = commit --verbose --all
+	
+	# branch
+	b = branch
+	
+	# add
+	a = add
+	aa = add --update
+	ap = add --patch
+	
+	# checkout
+	c = checkout
+	
+	# fetch
+	f = fetch
+	
+	# rebase
+	r = rebase --interactive HEAD~10
+	
+	# diff
+	d = diff
+	p = diff --cached # mnemonic: "patch"
+	ds = diff --stat # mnemonic: "diff stat"
+	
+	# status
+	s = -p status # with pagination
+	
+	# log
+	l = log --pretty=oneline --abbrev-commit
+	ll = log --pretty=oneline --abbrev-commit --max-count=15
+	lc = log --stat --summary
+	
+	# misc
+	pi = cherry-pick
+	
+	# experimental
+	stage = add
+	unstage = reset HEAD
+	pop = reset --soft HEAD^
+	review = log -p --max-count=1
+	rv = remote -v
+	fp = format-patch --stdout
+
+[core]
+	excludesfile = /Users/david/.gitignore
