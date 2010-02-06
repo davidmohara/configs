@@ -28,6 +28,8 @@
 	ci = commit --verbose
 	cn = commit --verbose --amend
 	ca = commit --verbose --all
+	cw = commit -m "WIP"
+	cm = commit -m
 	
 	# branch
 	b = branch
@@ -45,11 +47,14 @@
 	
 	# rebase
 	r = rebase --interactive HEAD~10
+	rc = rebase --continue
+	ra = rebase --abort
 	
 	# diff
 	d = diff
 	p = diff --cached # mnemonic: "patch"
 	ds = diff --stat # mnemonic: "diff stat"
+	dt = difftool --no-prompt
 	
 	# status
 	s = -p status # with pagination
@@ -61,6 +66,7 @@
 	
 	# misc
 	pi = cherry-pick
+	ki = stash --keep-index
 	
 	# experimental
 	stage = add
@@ -70,5 +76,3 @@
 	rv = remote -v
 	fp = format-patch --stdout
 
-[core]
-	excludesfile = /Users/david/.gitignore
