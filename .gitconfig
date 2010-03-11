@@ -30,6 +30,7 @@
 	ca = commit --verbose --all
 	cw = commit -m "WIP"
 	cm = commit -m
+	cc = commit -c
 	
 	# branch
 	b = branch
