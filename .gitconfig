@@ -59,6 +59,7 @@
 	
 	# status
 	s = -p status # with pagination
+  ss = -p status -s
 	
 	# log
 	l = log --pretty=oneline --abbrev-commit
