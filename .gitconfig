@@ -65,6 +65,7 @@
 	l = log --pretty=oneline --abbrev-commit
 	ll = log --pretty=oneline --abbrev-commit --max-count=15
 	lc = log --stat --summary
+  lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
 	
 	# misc
 	pi = cherry-pick
