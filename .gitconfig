@@ -79,3 +79,5 @@
 	rv = remote -v
 	fp = format-patch --stdout
 
+[achievement]
+	upload = true
