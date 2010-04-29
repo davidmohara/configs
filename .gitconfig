@@ -1,6 +1,7 @@
 [user]
 	name = David O'Hara
 	email = david@davidohara.net
+
 [color]
   branch = auto
   diff = auto
@@ -45,6 +46,12 @@
 	
 	# fetch
 	f = fetch
+
+  # pull
+  pr = pull --rebase
+
+  #push
+  pom = push origin master
 	
 	# rebase
 	r = rebase --interactive HEAD~10
@@ -65,7 +72,7 @@
 	l = log --pretty=oneline --abbrev-commit
 	ll = log --pretty=oneline --abbrev-commit --max-count=15
 	lc = log --stat --summary
-  lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+  lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative --max-count=15
 	
 	# misc
 	pi = cherry-pick
