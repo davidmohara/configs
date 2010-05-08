@@ -1,0 +1,8 @@
+export PATH="/usr/local/bin:/usr/local/sbin:/opt/local/bin:/opt/local/sbin:/usr/local/lib/ruby/gems/1.8/bin:$PATH"
+
+if [[ -s /Users/david/.rvm/scripts/rvm ]] ; then source /Users/david/.rvm/scripts/rvm ; fi
+# MacPorts Installer addition on 2009-04-05_at_09:40:28: adding an appropriate DISPLAY variable for use with MacPorts.
+export DISPLAY=:0
+
+# MacPorts Installer addition on 2009-10-24_at_15:29:32: adding an appropriate PATH variable for use with MacPorts.
+export PATH=/opt/local/bin:/opt/local/sbin:$PATH
