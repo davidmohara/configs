@@ -83,7 +83,7 @@ autocmd FileType ruby,eruby set omnifunc=rubycomplete#Complete
 "Add fuzzy search to :e lookups
 set wildmenu
 
-colorscheme murphy
+colorscheme herald
 if has('gui_running')
 	set guioptions-=T
 	set columns=120
