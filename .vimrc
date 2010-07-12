@@ -1,3 +1,8 @@
+runtime! autoload/pathogen.vim
+if exists('g:loaded_pathogen')
+  call pathogen#runtime_prepend_subdirectories(expand('~/.vimbundles'))
+endif
+
 " Swap files ******************************************************************
 set nobackup			" Do not save backup after close
 set writebackup			" Do keep a backup while working
@@ -88,4 +93,5 @@ if has('gui_running')
 	set guioptions-=T
 	set columns=120
 	set lines=60
+  set number
 endif

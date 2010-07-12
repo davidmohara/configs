@@ -1,0 +1,260 @@
+# ~/.hashrc
+# vim:set ft=sh sw=2 sts=2:
+
+[ -e "$HASHROCKET_DIR" ] || HASHROCKET_DIR="$HOME/hashrocket"
+export HASHROCKET_DIR
+
+for dir in /opt/local/bin /usr/local/bin "$HOME/bin"; do
+  case "$PATH:" in
+    *:"$dir":*) PATH="`echo "$PATH"|sed -e "s#:$dir##"`" ;;
+  esac
+  [ ! -d "$dir" ] || PATH="$dir:$PATH"
+done
+for dir in /usr/local/sbin /opt/local/sbin; do
+  case ":$PATH:" in
+    *:"$dir":*) ;;
+    *) [ ! -d "$dir" ] || PATH="$PATH:$dir" ;;
+  esac
+done
+
+HASHROCKET_AUTHOR_ALOWE="Adam Lowe"
+HASHROCKET_AUTHOR_BEEBE4="Ben McDonald"
+HASHROCKET_AUTHOR_BERNERDSCHAEFER="Bernerd Schaefer"
+HASHROCKET_AUTHOR_BIGTIGER="Jim Remsik"
+HASHROCKET_AUTHOR_DAVEOTT="Dave Ott"
+HASHROCKET_AUTHOR_DELITESCERE="Josh Graham"
+HASHROCKET_AUTHOR_DESI="Desi McAdam"
+HASHROCKET_AUTHOR_DURRAN="Durran Jordan"
+HASHROCKET_AUTHOR_L4RK="Jon Larkowski"
+HASHROCKET_AUTHOR_LI0N="Mark Smith"
+HASHROCKET_AUTHOR_LESHILL="Les Hill"
+HASHROCKET_AUTHOR_MATTSACKS="Matt Sacks"
+HASHROCKET_AUTHOR_MATTYOHO="Matt Yoho"
+HASHROCKET_AUTHOR_NARWEN="Thais Camilo"
+HASHROCKET_AUTHOR_OBIE="Obie Fernandez"
+HASHROCKET_AUTHOR_PAULELLIOTT="Paul Elliott"
+HASHROCKET_AUTHOR_RBXBX="Robert Pitts"
+HASHROCKET_AUTHOR_SANDRO="Sandro Turriate"
+HASHROCKET_AUTHOR_SHANERILEY="Shane Riley"
+HASHROCKET_AUTHOR_SHAYARNETT="Shay Arnett"
+HASHROCKET_AUTHOR_SUPASPOIDA="Lar Van Der Jagt"
+HASHROCKET_AUTHOR_THERUBYMUG="Rogelio J. Samour"
+HASHROCKET_AUTHOR_TPOPE="Tim Pope"
+HASHROCKET_AUTHOR_VEEZUS="Veezus Kreist"
+HASHROCKET_AUTHOR_VOXDOLO="Stephen Caudill"
+HASHROCKET_AUTHOR_WGIBBS="Wes Gibbs"
+
+hcd() {
+  cd "$HASHROCKET_DIR/$1"
+}
+
+hpair() {
+  local name email args initials author ret write
+  name=""
+  email="dev"
+  if [ -n "$ZSH_VERSION" ]; then
+    args=(${(i)@})
+  else
+    args="`for arg in "$@"; do echo "x$arg"|sed -e 's/^x//'|tr ' ' _; done|sort -f`"
+  fi
+  for arg in $args; do
+    initials=
+    author=
+    case "x$arg" in
+      x-h)
+      echo 'hpair rocketeer1 rocketeer2'
+      echo 'hpair rocketeer1 gueststar1="Real Name"'
+      echo 'hpair -u # go solo'
+      echo 'hpair    # status'
+      return 1
+      ;;
+      x-e) ret=email;    continue ;;
+      x-n) ret=name;     continue ;;
+      x-f) ret=file;     continue ;;
+      x-c) ret=commit;   continue ;;
+      x-s) ret=setenv;   continue ;;
+      x-u) ret=unsetenv; continue ;;
+      x-w) write=1;      continue ;;
+      x-*) echo "Unknown option $arg" >&2; return 1 ;;
+      x*=*)
+      initials="`echo "$arg"|sed -e s/=.*//`"
+      author="`echo "$arg"|sed -e s/[^=]*=//|tr _ ' '`"
+      ;;
+      [^-]*)
+      initials="`echo "$arg"|tr a-z A-Z`"
+      eval "author=\"\$HASHROCKET_AUTHOR_$initials\""
+      ;;
+    esac
+    if [ -z "$author" ]; then
+      echo "Invalid id $arg" >&2
+      return 1
+    fi
+    name="$name and $author"
+    email="$email+`echo "$initials"|tr A-Z a-z`"
+  done
+  name="`echo $name|sed -e 's/^ *and *//'`"
+  email="$email@hashrocket.com"
+  case "$ret" in
+    unsetenv) unset GIT_AUTHOR_NAME GIT_AUTHOR_EMAIL
+    [ ! -n "$write" ] || rm -f "$HOME/.hpairrc"
+    ;;
+    email) echo "$email" ;;
+    name)  echo "$name" ;;
+    file) git config user.name "$name" && git config user.email "$email" ;;
+    commit)
+    (
+    if [ "" = "$name" ]; then
+      unset GIT_AUTHOR_NAME GIT_AUTHOR_EMAIL
+    else
+      export GIT_AUTHOR_NAME="$name" GIT_AUTHOR_EMAIL="$email"
+    fi
+    git commit
+    ) ;;
+    *)
+    if [ "" = "$name" ]; then
+      if [ -u "$write" ]; then
+        unset GIT_AUTHOR_NAME GIT_AUTHOR_EMAIL
+        rm -f "$HOME/.hpairrc"
+      elif [ -n "$GIT_AUTHOR_NAME" ]; then
+        echo "$GIT_AUTHOR_NAME <$GIT_AUTHOR_EMAIL>"
+      else
+        return 1
+      fi
+    else
+      export GIT_AUTHOR_NAME="$name" GIT_AUTHOR_EMAIL="$email"
+      echo "$GIT_AUTHOR_NAME <$GIT_AUTHOR_EMAIL>"
+      if [ -n "$write" ]; then
+        rm -f "$HOME/.hpairrc"
+        printf 'hpair' > "$HOME/.hpairrc"
+        for arg in "$@"; do
+          case "$arg" in
+            -w) ;;
+            *" "*) printf " '$arg'" >> "$HOME/.hpairrc" ;;
+            *) printf " $arg" >> "$HOME/.hpairrc" ;;
+          esac
+        done
+        echo >> "$HOME/.hpairrc"
+      fi
+    fi ;;
+  esac
+}
+[ -n "$GIT_AUTHOR_EMAIL" -o ! -f "$HOME/.hpairrc" -o -z "$PS1" ] || . "$HOME/.hpairrc"
+
+git() {
+  [ -f "$HOME/.hitch_export_authors" ] && . "$HOME/.hitch_export_authors"
+  [ -f "$HOME/.hpairrc" ] && . "$HOME/.hpairrc" >/dev/null
+  command git "$@"
+}
+
+hclone() {
+  local url basename
+  basename="`basename $1 .git`"
+  if [ ! -d "$HASHROCKET_DIR/$basename" ]; then
+    case "$1" in
+      *://*) url="$1" ;;
+      */*)   url="git@github.com:$1.git" ;;
+      *)     url="git@github.com:hashrocket/$1.git" ;;
+    esac
+    git clone "$url" "$HASHROCKET_DIR/$basename" || return 1
+    if [ -f "$HASHROCKET_DIR/$basename/config/database.example.yml" ]; then
+        cp "$HASHROCKET_DIR/$basename/config/database.example.yml" "$HASHROCKET_DIR/$basename/config/database.yml"
+    fi
+  fi
+  hcd "$basename"
+}
+
+# Tab completion
+if [ -n "$BASH_VERSION" ]; then
+  _hcd()
+  {
+    local cur projects
+
+    [ -r "$HASHROCKET_DIR" ] || return 0
+
+    COMPREPLY=()
+    cur=${COMP_WORDS[COMP_CWORD]}
+    projects=$(\ls "$HASHROCKET_DIR")
+
+    if [ $COMP_CWORD -eq 1 ]; then
+      COMPREPLY=( $(compgen -o filenames -W "$projects" $cur) )
+    fi
+
+    return 0
+  }
+  complete -F _hcd hcd
+elif [ -n "$ZSH_VERSION" ]; then
+  #compdef '_files -W "$HASHROCKET_DIR"' hcd
+  compctl -/ -W "$HASHROCKET_DIR" hcd
+fi
+
+rails_root() {
+  (
+  dir=${1:-$(pwd)}
+  i=0
+  while [ "/" != "$dir" -a "$i" -ne 16 ]; do
+    if [ -f "$dir/config/environment.rb" ]; then
+      echo "$dir"
+      return 0
+    fi
+    dir="$(dirname "$dir")"
+    i=$(expr $i + 1)
+  done
+  return 1
+  )
+}
+
+stc() {
+  (
+  local root
+  root="`rails_root`"
+  [ -n "$root" ] || root=.
+  if [ "$root/config/amazon_s3.yml" -nt "$root/tmp/s3cfg" ] || [ -f "$root/config/amazon_s3.yml" -a ! -f "$root/tmp/s3cfg" ]; then
+    ruby -ryaml -e '
+    c = YAML.load(File.read(ARGV.first))[ENV["RAILS_ENV"]||"development"]
+    File.open(ARGV.last,"w") do |f|
+    f.puts "access_key = #{c["access_key_id"]}"
+    f.puts "secret_key = #{c["secret_access_key"]}"
+    end if c.kind_of?(Hash)
+    ' "$root/config/amazon_s3.yml" "$root/tmp/s3cfg"
+  fi
+  if [ -f "$root/tmp/s3cfg" ]; then
+    exec s3cmd -c "$root/tmp/s3cfg" "$@"
+  else
+    exec s3cmd "$@"
+  fi
+  )
+}
+
+script_rails() {
+  if [ -f "`rails_root`/script/rails" ]; then
+    "`rails_root`/script/rails" "$@"
+  else
+    local name
+    name="$1"
+    shift
+    "`rails_root`/script/$name" "$@"
+  fi
+}
+
+twiki () {
+  rake db:migrate && rake db:migrate:redo && rake db:test:prepare
+}
+
+alias sc='script_rails console'
+alias ss='script_rails server -u'
+alias sdbc='script_rails dbconsole -p'
+
+alias ll='ls -l'
+
+alias gb='git branch'
+alias gc='git commit -v'
+alias gca='git commit -a -v'
+alias gco="git checkout"
+alias gd='git diff'
+alias gdc='git diff --cached'
+alias gdh='git diff HEAD'
+alias gp='git push'
+alias gl='git pull'
+alias gpr='git pull --rebase'
+alias gst='git status'
+alias gap='git add -p'
