@@ -11,5 +11,7 @@ task :setup do
   sh 'ln -s .gitignore ~/.gitignore'
 
   sh 'ln -s .hashrc ~/.hashrc'
+  FileUtils.mkdir_p '~/bin'
+  sh 'cp -r bin/. ~/bin/'
   sh '~/bin/vimbundles.sh'
 end
