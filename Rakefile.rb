@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
 
+PWD = Dir.pwd
+
 desc "Set up all configs"
 task :setup do
   FileUtils.mkdir_p '~/.vim/colors'
@@ -7,11 +9,11 @@ task :setup do
 
   FileUtils.cp '.bash_login', '~/'
   FileUtils.cp '.bash_profile', '~/'
-  sh 'ln -s .bashrc ~/'
-  sh 'ln -s .gitconfig ~/'
-  sh 'ln -s .gitignore ~/'
-  sh 'ln -s .hashrc ~/'
-  sh 'ln -s .vimrc ~/'
+  sh "ln -s #{PWD}.bashrc ~/"
+  sh "ln -s #{PWD}.gitconfig ~/"
+  sh "ln -s #{PWD}.gitignore ~/"
+  sh "ln -s #{PWD}.hashrc ~/"
+  sh "ln -s #{PWD}.vimrc ~/"
 
   FileUtils.mkdir_p '~/bin'
   sh 'cp -r bin/. ~/bin/'
