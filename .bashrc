@@ -8,6 +8,7 @@ EDITOR="$VISUAL"
 LESS="FRX"
 RI="--format ansi -T"
 SSH_ENV="$HOME/.ssh/environment"
+PLATFORM=`uname`
 
 export VISUAL EDITOR LESS RI
 
@@ -36,3 +37,5 @@ export PS1="\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;36m\]\w\[\033[00m\]\$(par
 if [[ -s "$HOME/.rvm/scripts/rvm" ]]; then . "$HOME/.rvm/scripts/rvm"; fi
 
 [ ! -f "$HOME/.bashrc.local" ] || . "$HOME/.bashrc.local"
+
+[ ! -f "$HOME/.bashrc.$PLATFORM" ] || . "$HOME/.bashrc.$PLATFORM"
