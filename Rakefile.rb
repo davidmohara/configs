@@ -6,11 +6,13 @@ task :setup do
   sh 'cp -r vimcolors/. ~/.vim/colors/'
 
   FileUtils.cp '.bash_login', '~/'
-  sh 'ln -s .bashrc ~/.bashrc'
-  sh 'ln -s .gitconfig ~/.gitconfig'
-  sh 'ln -s .gitignore ~/.gitignore'
+  FileUtils.cp '.bash_profile', '~/'
+  sh 'ln -s .bashrc ~/'
+  sh 'ln -s .gitconfig ~/'
+  sh 'ln -s .gitignore ~/'
+  sh 'ln -s .hashrc ~/'
+  sh 'ln -s .vimrc ~/'
 
-  sh 'ln -s .hashrc ~/.hashrc'
   FileUtils.mkdir_p '~/bin'
   sh 'cp -r bin/. ~/bin/'
   sh '~/bin/vimbundles.sh'
