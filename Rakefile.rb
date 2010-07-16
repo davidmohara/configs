@@ -15,6 +15,9 @@ task :setup do
   sh "ln -s #{PWD}.hashrc ~/"
   sh "ln -s #{PWD}.vimrc ~/"
 
+  FileUtils.mkdir_p '~/.vim/autoload'
+  sh 'cp -r autoload/. ~/.vim/autoload/'
+
   FileUtils.mkdir_p '~/bin'
   sh 'cp -r bin/. ~/bin/'
   sh '~/bin/vimbundles.sh'
