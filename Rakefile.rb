@@ -1,7 +1,5 @@
 #!/usr/bin/env ruby
 
-PWD = Dir.pwd
-
 desc "Set up all configs"
 task :setup do
   FileUtils.mkdir_p '~/.vim/colors'
@@ -9,11 +7,11 @@ task :setup do
 
   FileUtils.cp '.bash_login', '~/'
   FileUtils.cp '.bash_profile', '~/'
-  sh "ln -s #{PWD}.bashrc ~/"
-  sh "ln -s #{PWD}.gitconfig ~/"
-  sh "ln -s #{PWD}.gitignore ~/"
-  sh "ln -s #{PWD}.hashrc ~/"
-  sh "ln -s #{PWD}.vimrc ~/"
+  link_file '.bashrc', '~/'
+  link_file '.gitconfig', '~/'
+  link_file '.gitignore', '~/'
+  link_file '.hashrc', '~/'
+  link_file '.vimrc', '~/'
 
   FileUtils.mkdir_p '~/.vim/autoload'
   sh 'cp -r autoload/. ~/.vim/autoload/'
@@ -21,4 +19,8 @@ task :setup do
   FileUtils.mkdir_p '~/bin'
   sh 'cp -r bin/. ~/bin/'
   sh '~/bin/vimbundles.sh'
+end
+
+def link_file(filename, target_dir)
+  sh "ln -s #{pwd}/#{filename} #{target_dir}" unless File.exist? File.expand_path target_dir + filename
 end
