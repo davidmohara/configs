@@ -12,6 +12,8 @@ task :setup do
   link_file '.gitignore', '~/'
   link_file '.hashrc', '~/'
   link_file '.vimrc', '~/'
+  link_file '.viemurc', '~/'
+  link_file '.common.vim', '~/'
 
   FileUtils.mkdir_p '~/.vim/autoload'
   sh 'cp -r autoload/. ~/.vim/autoload/'

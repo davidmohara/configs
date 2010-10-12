@@ -3,6 +3,9 @@ if exists('g:loaded_pathogen')
   call pathogen#runtime_prepend_subdirectories(expand('~/.vimbundles'))
 endif
 
+" Load common file
+source ~/.common.vim
+
 " Swap files ******************************************************************
 set nobackup			" Do not save backup after close
 set writebackup			" Do keep a backup while working
@@ -43,17 +46,6 @@ set ai " Automatically set the indent of a new line (local to buffer)
 set si " smartindent (local to buffer)
 
 :syntax on
-
-" Mappings ********************************************************************
-imap jj <Esc>
-imap uu _
-imap hh =>
-imap aa @
-
-map <S-Enter> O<Esc> " awesome, inserts new line without going into insert mode
-map <Enter> o<Esc>
-set fo-=r " do not insert a comment leader after an enter, (no work, fix!!)
- 
 
 " Cursor Movement *************************************************************
 " Make cursor move by visual lines instead of file lines (when wrapping)
