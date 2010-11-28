@@ -4,7 +4,7 @@ if exists('g:loaded_pathogen')
 endif
 
 " Load common file
-source ~/.common.vim
+" source ~/.common.vim
 
 " Swap files ******************************************************************
 set nobackup			" Do not save backup after close
@@ -49,12 +49,19 @@ set si " smartindent (local to buffer)
 
 "Bubble single lines (kicks butt)
 "http://vimcasts.org/episodes/bubbling-text/
-nmap <C-Up> ddkP
-nmap <C-Down> ddp
+nmap <C-S-Up> ddkP
+nmap <C-S-Down> ddp
 
 "Bubble multiple lines
-vmap <C-Up> xkP`[V`]
-vmap <C-Down> xp`[V`]
+vmap <C-S-Up> xkP`[V`]
+vmap <C-S-Down> xp`[V`]
+
+imap jj <Esc>
+imap uu _
+imap hh =>
+imap aa @
+map <S-Enter> O<Esc> 
+map <Enter> o<Esc>
 
 " Cursor Movement *************************************************************
 " Make cursor move by visual lines instead of file lines (when wrapping)
